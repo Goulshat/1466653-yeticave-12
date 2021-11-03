@@ -33,7 +33,7 @@ $user_name = 'Гульшат';
                 <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
                 <a class="user-menu__logout" href="#">Выход</a>
                 </div>
-            <?php elseif($is_auth == 0):?>
+            <?php else :?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
                         <a href="#">Регистрация</a>
@@ -43,8 +43,6 @@ $user_name = 'Гульшат';
                     </li>
                 </ul>
             <?php endif;?>
-        <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
-
         </nav>
     </div>
 </header>
