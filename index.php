@@ -3,7 +3,7 @@ $is_auth = rand(0, 1);
 $user_name = "Гульшат";
 
 $categories = [
-   "boards" => "Доски и лыжи",
+    "boards" => "Доски и лыжи",
     "bindings" => "Крепления",
     "boots" => "Ботинки",
     "cloths" => "Одежда",
@@ -49,7 +49,6 @@ $products = [
        "url" => "img/lot-6.jpg"
    ],
 ];
-
 
 ?>
 <!DOCTYPE html>
