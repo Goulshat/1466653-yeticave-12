@@ -46,4 +46,3 @@ $products = [
        "url" => "img/lot-6.jpg"
    ],
 ];
-?>

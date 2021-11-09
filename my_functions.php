@@ -18,4 +18,3 @@ function showPrice($number) {
 function html_sc($text) {
     return htmlspecialchars($text, ENT_QUOTES);
 };
-?>

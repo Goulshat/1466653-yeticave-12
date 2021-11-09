@@ -10,4 +10,3 @@ $content = include_template("main.php", ["categories" => $categories, "products"
 $layout_content = include_template("layout.php", [$page_name => "Главная", "content" => $content]);
 
 echo $layout_content;
-?>
