@@ -4,7 +4,7 @@ function showPrice($number) {
     return number_format($number, 0, "", " ") . " ₽";
 };
 
-function safeText($text) {
-    return htmlspecialchars($text);
+function html_sc($text) {
+    return htmlspecialchars($text, ENT_QUOTES);
 };
 ?>
