@@ -21,5 +21,7 @@ function html_sc($text) {
 
 function countLeftTime(string $expireDate) {
     $timeLeft = strtotime($expireDate) - time();
-    return [floor($timeLeft / 3600), ceil(($timeLeft % 3600) / 60)];
+    $hoursLeft = floor($timeLeft / 3600);
+    $minutesLeft = ceil(($timeLeft % 3600) / 60);
+    return [str_pad($hoursLeft, 2, "0", STR_PAD_LEFT), str_pad($minutesLeft, 2, "0", STR_PAD_LEFT)];
 }
