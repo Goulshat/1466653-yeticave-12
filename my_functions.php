@@ -18,3 +18,10 @@ function showPrice($number) {
 function html_sc($text) {
     return htmlspecialchars($text, ENT_QUOTES);
 };
+
+function countLeftTime(string $expireDate) {
+    $timeLeft = strtotime($expireDate) - time();
+    $hoursLeft = floor($timeLeft / 3600);
+    $minutesLeft = ceil(($timeLeft % 3600) / 60);
+    return [str_pad($hoursLeft, 2, "0", STR_PAD_LEFT), str_pad($minutesLeft, 2, "0", STR_PAD_LEFT)];
+}
