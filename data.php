@@ -14,21 +14,21 @@ $products = [
        "category" => "boards",
        "price" => "10999",
        "url" => "img/lot-1.jpg",
-       "expireDate" => "31.11.2021",
+       "expireDate" => "21.11.2021",
    ],
    1 => [
        "name" => "DC Ply Mens 2016/2017 Snowboard",
        "category" => "boards",
        "price" => "159999",
        "url" => "img/lot-2.jpg",
-       "expireDate" => "03.11.2021",
+       "expireDate" => "17.11.2021",
    ],
    2 => [
        "name" => "Крепления Union Contact Pro 2015 года размер L/XL",
        "category" => "bindings",
        "price" => "8000",
        "url" => "img/lot-3.jpg",
-       "expireDate" => "12.11.2021",
+       "expireDate" => "16.11.2021",
    ],
    3 => [
        "name" => "Ботинки для сноуборда DC Mutiny Charocal",
@@ -49,6 +49,6 @@ $products = [
        "category" => "miscellaneous",
        "price" => "5400",
        "url" => "img/lot-6.jpg",
-       "expireDate" => "10.11.2021",
+       "expireDate" => "17.11.2021",
    ],
 ];
