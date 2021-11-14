@@ -47,12 +47,10 @@
                                 <?= html_sc(showPrice($product["price"]))?>
                             </span>
                         </div>
-                        <?php $itemExpireDate = countLeftTime($product["expireDate"])?> <!-- вот здесь фактический вывод получаемого массива в переменную без html_sc(). Как можно обезопасить? -->
+                        <?php list($hours, $minutes) = countLeftTime($product["expireDate"]);?>
                         <div class="lot__timer timer
-                            <?php if (html_sc($itemExpireDate[0]) < 1){
-                                echo "timer--finishing";
-                            }?>">
-                            <?= html_sc($itemExpireDate[0]) . ": " . html_sc($itemExpireDate[1]); ?>
+                            <?php if (intval($hours) < 1):?> timer--finishing <?php endif; ?>";>
+                            <?= html_sc($hours); ?>: <?= html_sc($minutes); ?>
                         </div>
                     </div>
                 </div>
