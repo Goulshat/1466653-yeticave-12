@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+05:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `bid` (
   `id` int(11) NOT NULL,
   `date_register` datetime DEFAULT NULL,
-  `amount` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `lot_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
