@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 28, 2021 at 04:57 PM
+-- Generation Time: Nov 29, 2021 at 06:40 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.16
 
@@ -43,7 +43,8 @@ CREATE TABLE `bid` (
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) COLLATE utf8mb4_bin NOT NULL
+  `name` varchar(20) COLLATE utf8mb4_bin NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -59,9 +60,9 @@ CREATE TABLE `lots` (
   `img` text COLLATE utf8mb4_bin,
   `date_register` datetime DEFAULT NULL,
   `date_expire` datetime DEFAULT NULL,
-  `price` decimal(10,0) DEFAULT NULL,
-  `bid_step` decimal(10,0) DEFAULT NULL,
-  `category` int(11) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `bid_step` decimal(10,2) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `author_user_id` int(11) DEFAULT NULL,
   `winner_user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -77,6 +78,7 @@ CREATE TABLE `users` (
   `email` varchar(40) NOT NULL,
   `password` varchar(40) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `contacts` text NOT NULL,
   `date_register` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -94,7 +96,8 @@ ALTER TABLE `bid`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `lots`
