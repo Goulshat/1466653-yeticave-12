@@ -41,25 +41,34 @@ INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (12999, '2021-12
 /* ----- получить все категории ----- */
 SELECT * FROM category;
 
-/* ----- обновить expire_date по id ----- */
-UPDATE lots SET expire_date='2021-11-30' WHERE id=2;
+/* ----- обновить date_expire по id ----- */
+UPDATE lots SET date_expire='2021-11-30' WHERE id=2;
+
+/* ----- обновить register_date по id ----- */
+UPDATE lots SET date_register='2021-12-07' WHERE id=4;
 
 /* ----- удалить победителей из незакрытых лотов ----- */
 UPDATE lots SET winner_user_id=NULL WHERE date_expire > CURDATE();
 
-/* ----- получить самые новые, открытые лоты ----- */
-SELECT * FROM (
-  SELECT * FROM lots WHERE winner_user_id IS NULL
-  ) AS result
-  WHERE date_register > CURDATE() -3;
+/* ----- получить самые новые, открытые лоты  - Вариант 2  ----- */
+SELECT lots.name, lots.price, lots.img AS 'link', lots.date_register,
+category.name AS 'category',
+bid.amount AS 'current price'
+FROM lots
+JOIN category ON lots.category_id=category.id
+JOIN bid ON lots.id=bid.lot_id
+WHERE winner_user_id IS NULL
+ORDER BY date_register DESC LIMIT 3;
+/* подзапрос был чтобы отфильтровать вначале открытые лоты, затем  */
 
 /* ----- обновить название лота по его идентификатору ----- */
 UPDATE lots SET name='Куртка для сноуборда Roxxy', description='Куртка для сноуборда Roxxy' WHERE id=5;
 
 /* ----- показать лот по его ID. Получите также название категории, к которой принадлежит лот ----- */
-SELECT lots.id, lots.name AS 'Item' from lots JOIN category ON lots.category_id=category.id WHERE lots.id=3;
+SELECT lots.id, lots.name, category.name AS 'category'
+FROM lots JOIN category ON lots.category_id=category.id WHERE lots.id=3;
 
 /* ----- получить список ставок для лота по его идентификатору с сортировкой по дате ----- */
-SELECT lots.id, lots.name, bid.amount, lots.date_expire FROM
-lots JOIN bid ON lots.id=bid.lot_id
+SELECT bid.id, bid.amount, lots.id, lots.name, lots.date_expire
+FROM lots JOIN bid ON lots.id=bid.lot_id
 WHERE lots.id=1 ORDER BY lots.date_expire;
