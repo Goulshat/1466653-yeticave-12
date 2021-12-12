@@ -15,7 +15,7 @@ INSERT INTO users (email, password, name, contacts, date_register) VALUES ('mail
 
 /* ----- Добавляю значения в таблицу "Лоты" ----- */
 INSERT INTO lots (name, description, img, date_register, date_expire, price, bid_step, category_id, author_user_id, winner_user_id)
-VALUES ('2014 Rossignol District Snowboard', '2014 Rossignol District Snowboard', 'img/lot-1.jpg', '2021-11-20', '2021-21-11', 10999, 100, 1, 3, null);
+VALUES ('2014 Rossignol District Snowboard', '2014 Rossignol District Snowboard', 'img/lot-1.jpg', '2021-11-20', '2021-12-02', 10999, 100, 1, 3, null);
 
 INSERT INTO lots (name, description, img, date_register, date_expire, price, bid_step, category_id, author_user_id, winner_user_id)
 VALUES ('DC Ply Mens 2016/2017 Snowboard', 'DC Ply Mens 2016/2017 Snowboard', 'img/lot-2.jpg', '2021-10-20', '2021-11-30', 159999, 1000, 1, 2, null); /* replace step */
@@ -57,10 +57,15 @@ INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (8400, '2021-11-
 INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (8600, '2021-12-05', 5, 5);
 
 INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (5600, '2021-12-04', 1, 6);
-INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (12999, '2021-12-04', 3, 6);
-INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (12999, '2021-12-04', 4, 6);
-INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (12999, '2021-12-04', 3, 6);
-INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (12999, '2021-12-04', 5, 6);
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (5800, '2021-12-04', 3, 6);
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (6000, '2021-12-04', 4, 6);
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (6200, '2021-12-04', 3, 6);
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (6400, '2021-12-04', 5, 6);
+
+UPDATE bid SET amount=5800 WHERE id=25;
+UPDATE bid SET amount=6000 WHERE id=26;
+UPDATE bid SET amount=6200 WHERE id=27;
+UPDATE bid SET amount=6400 WHERE id=28;
 
 /* ----- все запросы по заданию  ----- */
 SELECT * FROM category;
@@ -69,21 +74,25 @@ SELECT * FROM category;
 UPDATE lots SET name='Куртка для сноуборда Roxxy', description='Куртка для сноуборда Roxxy' WHERE id=5;
 
 /* ----- показать лот по его ID. Получите также название категории, к которой принадлежит лот ----- */
-SELECT lots.name, category.name AS 'category'
+SELECT lots.name, category.name AS `category`
 FROM lots JOIN category ON lots.category_id=category.id WHERE lots.id=3;
 
 /* ----- получить список ставок для лота по его идентификатору с сортировкой по дате ----- */
-SELECT lots.name, bid.amount
-FROM lots JOIN bid ON lots.id=bid.lot_id
-WHERE lots.id=1 ORDER BY lots.date_expire;
+SELECT amount, date_register
+FROM bid WHERE lot_id=3 ORDER BY date_register DESC;
 
-/* ----- получить самые новые, открытые лоты - Вариант 2 ----- */
-SELECT lots.name, lots.price, lots.img AS 'link',
-category.name AS 'category',
-bid.amount AS 'current price',
+/* ---- добавить еще один лот ----- */
+INSERT INTO lots (name, description, img, date_register, date_expire, price, bid_step, category_id, author_user_id, winner_user_id)
+VALUES ('Крутой такой шлем с ярким принтом вот здесь', 'Крутой такой шлем с ярким принтом вот здесь', 'img/lot-7.jpg', '2021-12-10', '2022-01-10', 5000, 250, 6, 1, null);
+
+/* ----- получить самые новые, открытые лоты ----- */
+SELECT lots.name, lots.price, lots.img AS `link`,
+category.name AS `category`,
+IFNULL(MAX(bid.amount), lots.price) AS `current price`,
 lots.date_register
 FROM lots
 JOIN category ON lots.category_id=category.id
-JOIN bid ON lots.id=bid.lot_id
+LEFT OUTER JOIN bid ON lots.id=bid.lot_id
 WHERE winner_user_id IS NULL
+GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register
 ORDER BY lots.date_register DESC;
