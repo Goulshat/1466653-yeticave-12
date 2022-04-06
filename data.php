@@ -55,15 +55,13 @@ $products = [
 ];
 */
 
-require_once("course_library.php");
-require_once("my_functions.php");
+$config = require "config.php";
+//require_once("my_functions.php");
 
 if (!file_exists("config.php")) {
-  $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
-  trigger_error($msg,E_USER_ERROR);
+    $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
+    trigger_error($msg,E_USER_ERROR);
 }
-
-$config = require "config.php";
 
 $db_host = $config["db"]["host"];
 $db_username = $config["db"]["username"];
@@ -73,27 +71,34 @@ $db_port = $config["db"]["port"];
 $db_charset = $config["db"]["charset"];
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+//до этой строки код выполняется, а дальше ошибки и ошибки не выводит
 
 $db =  new mysqli($db_host, $db_username, $db_password,$db_dbname, $db_port); // соединение с сервером
 
 if ($db->connect_errno) {
-  //echo "Connect failed: %s\n" . $db->connect_error;
-  $errorMsg = 'Не удалось установить соединение: ' . $db->connect_error;
-  die($errorMsg);
+    //echo "Connect failed: %s\n" . $db->connect_error;
+    $errorMsg = 'Не удалось установить соединение: ' . $db->connect_error;
+    die($errorMsg);
 }
 
 $db->set_charset($db_charset); // кодировка
 
-/* --- Запрос категорий --- */
+// Запрос категорий - без использования функции
 $sql_categories = "
 SELECT * FROM ?;";
 
 $sql_var = "category"; // Переменные
-db_get_prepare_stmt($db, $sql_categories, $sql_var); // Подготовка запроса
+$stmt->init(); // нужно ли?
+$stmt->prepare($sql_categories); // Подготовка запроса
+$stmt->bind_params("s", $sql_var); // Связываю с переменными
+$stmt->execute(); // Выполняю запрос
+
+// db_get_prepare_stmt($db, $sql_categories, $sql_var); // Подготовка запроса
+
 $result = $stmt->get_result(); // Получаем результат..
 $categories = $result->fetch_all(MYSQLI_ASSOC); // ..двумерный массив
-
-/* --- Запрос лотов --- */
+/*
+// Запрос лотов - с использованием функции
 $sql_lots = "
 SELECT lots.name, lots.price, lots.img AS ?,
 category.name AS ?,
@@ -113,3 +118,4 @@ $products = []; // инициализировать пустой массив п
 while ($row = $result->fetch_assoc()) {
     $products[] = $row;
 }
+*/
