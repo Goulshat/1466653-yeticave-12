@@ -24,7 +24,7 @@ function countLeftTime(string $expireDate) {
     $minutesLeft = ceil(($timeLeft % 3600) / 60);
     return [str_pad($hoursLeft, 2, "0", STR_PAD_LEFT), str_pad($minutesLeft, 2, "0", STR_PAD_LEFT)];
 }
-
+/*
 function db_get_prepare_stmt($link, $sql, $data = []) {
     $stmt = $link->prepare($sql);
 
@@ -65,4 +65,4 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
     }
 
     return $stmt;
-}
+}*/
