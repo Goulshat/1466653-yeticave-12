@@ -7,8 +7,9 @@ require_once("data.php");
 
 $is_auth = rand(0, 1);
 $user_name = "Гульшат";
+$page_name = "Главная";
 
 $content = include_template("main.php", ["categories" => $categories, "products" => $products]);
-$layout_content = include_template("layout.php", [$page_name => "Главная", "content" => $content]);
+$layout_content = include_template("layout.php", ["is_auth" => $is_auth, "page_name" => $page_name, "categories" => $categories, "content" => $content]);
 
 echo $layout_content;

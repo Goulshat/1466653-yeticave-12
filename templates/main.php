@@ -3,11 +3,10 @@
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categories as $category => $value): ?>
-            <li class="promo__item promo__item--boards">
+            <li class="promo__item promo__item--<?= html_sc($value["name"]); ?>">
                 <a class="promo__link" href="pages/all-lots.html">
-                    <?= html_sc($value); ?>
+                    <?= html_sc($value["title"]); ?>
                 </a>
             </li>
             <?php endforeach; ?>
@@ -20,7 +19,6 @@
         </div>
 
         <ul class="lots__list">
-            <!--заполните этот список из массива с товарами-->
             <?php foreach($products as $id => $product):?>
 
             <li class="lots__item lot">
@@ -47,7 +45,7 @@
                                 <?= html_sc(showPrice($product["price"]))?>
                             </span>
                         </div>
-                        <?php list($hours, $minutes) = countLeftTime($product["expireDate"]);?>
+                        <?php list($hours, $minutes) = countLeftTime($product["date_expire"]);?>
                         <div class="lot__timer timer
                             <?php if (intval($hours) < 1):?> timer--finishing <?php endif; ?>";>
                             <?= html_sc($hours); ?>: <?= html_sc($minutes); ?>

@@ -86,13 +86,21 @@ INSERT INTO lots (name, description, img, date_register, date_expire, price, bid
 VALUES ('Крутой такой шлем с ярким принтом вот здесь', 'Крутой такой шлем с ярким принтом вот здесь', 'img/lot-7.jpg', '2021-12-10', '2022-01-10', 5000, 250, 6, 1, null);
 
 /* ----- получить самые новые, открытые лоты ----- */
-SELECT lots.name, lots.price, lots.img AS `link`,
-category.name AS `category`,
-IFNULL(MAX(bid.amount), lots.price) AS `current price`,
+SELECT lots.name, lots.price, lots.img AS `url`,
+category.name AS `category`, lots.date_expire AS `date_expire`,
+IFNULL(MAX(bid.amount), lots.price) AS `price`,
 lots.date_register
 FROM lots
 JOIN category ON lots.category_id=category.id
 LEFT OUTER JOIN bid ON lots.id=bid.lot_id
 WHERE winner_user_id IS NULL
-GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register
+GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register, lots.date_expire
 ORDER BY lots.date_register DESC;
+
+/* ----- обновить время date_expire ----- */
+UPDATE lots SET date_expire='2022-04-14' WHERE id=1;
+UPDATE lots SET date_expire='2022-04-12' WHERE id=2;
+UPDATE lots SET date_expire='2022-04-15' WHERE id=3;
+UPDATE lots SET date_expire='2022-04-18' WHERE id=4;
+UPDATE lots SET date_expire='2022-04-23' WHERE id=5;
+UPDATE lots SET date_expire='2022-04-19' WHERE id=6;

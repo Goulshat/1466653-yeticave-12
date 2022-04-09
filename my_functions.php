@@ -1,6 +1,5 @@
 <?php
-function include_template($name, array $data = [])
-{
+function include_template($name, array $data = []) {
     $name = __DIR__.'/templates/'.$name;
 
     ob_start();

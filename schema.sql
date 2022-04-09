@@ -7,6 +7,7 @@
 -- Server version: 5.7.24
 -- PHP Version: 7.4.16
 
+SET NAMES "utf8mb4";
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+05:00";
