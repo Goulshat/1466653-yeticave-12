@@ -3,7 +3,6 @@
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categories as $category => $value): ?>
             <li class="promo__item promo__item--<?= html_sc($value["name"]); ?>">
                 <a class="promo__link" href="pages/all-lots.html">
@@ -20,7 +19,6 @@
         </div>
 
         <ul class="lots__list">
-            <!--заполните этот список из массива с товарами-->
             <?php foreach($products as $id => $product):?>
 
             <li class="lots__item lot">
