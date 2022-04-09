@@ -41,27 +41,26 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
         $types = '';
         $stmt_data = [];
 
-    foreach ($data as $value) {
-        $type = 's';
-
-        if (is_int($value)) {
-            $type = 'i';
-        }
-        else if (is_string($value)) {
+        foreach ($data as $value) {
             $type = 's';
-        }
-        else if (is_double($value)) {
-            $type = 'd';
-        }
 
-        if ($type) {
-            $types .= $type;
-            $stmt_data[] = $value;
+            if (is_int($value)) {
+                $type = 'i';
+            }
+            else if (is_string($value)) {
+                $type = 's';
+            }
+            else if (is_double($value)) {
+                $type = 'd';
+            }
+
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
         }
-    }
 
         $stmt->bind_param($types, $stmt_data);
-        $stmt->execute();
     }
 
     return $stmt;

@@ -7,7 +7,7 @@
             <?php foreach($categories as $category => $value): ?>
             <li class="promo__item promo__item--boards">
                 <a class="promo__link" href="pages/all-lots.html">
-                    <?= html_sc($value); ?>
+                    <?= html_sc($value["title"]); ?>
                 </a>
             </li>
             <?php endforeach; ?>
@@ -47,7 +47,7 @@
                                 <?= html_sc(showPrice($product["price"]))?>
                             </span>
                         </div>
-                        <?php list($hours, $minutes) = countLeftTime($product["expireDate"]);?>
+                        <?php list($hours, $minutes) = countLeftTime($product["date_expire"]);?>
                         <div class="lot__timer timer
                             <?php if (intval($hours) < 1):?> timer--finishing <?php endif; ?>";>
                             <?= html_sc($hours); ?>: <?= html_sc($minutes); ?>

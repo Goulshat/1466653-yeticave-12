@@ -91,25 +91,23 @@ SELECT * FROM `category`;";
 $result = $db->query($sql);
 $categories = $result->fetch_all(MYSQLI_ASSOC); // ..двумерный массив
 
-// Запрос категорий - без использования функции
+// Запрос лотов
 $sql = "
-SELECT lots.name, lots.price, lots.img AS `link`,
-category.name AS `category`,
-IFNULL(MAX(bid.amount), lots.price) AS `current price`,
+SELECT lots.name, lots.price, lots.img AS `url`,
+category.name AS `category`, lots.date_expire AS `date_expire`,
+IFNULL(MAX(bid.amount), lots.price) AS `price`,
 lots.date_register
 FROM lots
 JOIN category ON lots.category_id=category.id
 LEFT OUTER JOIN bid ON lots.id=bid.lot_id
 WHERE winner_user_id IS NULL
-GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register
+GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register, lots.date_expire
 ORDER BY lots.date_register DESC;
 ";
 $result = $db->query($sql);
-$products = [];
-while ($row = $result->fetch_assoc()) {
-    $products[] = $row; // разница в написании $products = $row; ?? добавляет новое значение в конец массива
-}
+$products = $result->fetch_all(MYSQLI_ASSOC); // ..двумерный массив
 
+/*
 $sql = "
 SELECT amount, date_register
 FROM bid WHERE lot_id=? ORDER BY date_register DESC;";
@@ -120,38 +118,8 @@ $stmt->bind_param("i", $sql_var); // Связываю с переменными
 $stmt->execute(); // Выполняю запрос
 $result = $stmt->get_result();
 
-$products = []; // инициализировать пустой массив перед циклом
+$bids = []; // инициализировать пустой массив перед циклом
 while ($row = $result->fetch_assoc()) {
-    $products[] = $row;
-}
-
-/*$sql = "
-SELECT amount, date_register
-FROM bid WHERE lot_id=3 ORDER BY date_register DESC;";
-//db_get_prepare_stmt($db, $sql_categories, $sql_var); // Подготовка запроса
-/*
-
-
-
-// Запрос лотов - с использованием функции
-$sql_lots = "
-SELECT lots.name, lots.price, lots.img AS `link`,
-category.name AS `category`,
-IFNULL(MAX(bid.amount), lots.price) AS `current price`,
-lots.date_register
-FROM lots
-JOIN category ON lots.category_id=category.id // category.id
-LEFT OUTER JOIN bid ON lots.id=bid.lot_id //bid.lot_id
-WHERE winner_user_id IS NULL
-GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register
-ORDER BY lots.date_register DESC;
-";
-
-$sql_var = ["link", "category", "price"]; // Переменные
-db_get_prepare_stmt($db, $sql_categories, $sql_var); // Подготовка запроса
-$result = $stmt->get_result(); // Получаем результат..
-$products = []; // инициализировать пустой массив перед циклом
-while ($row = $result->fetch_assoc()) {
-    $products[] = $row;
+    $bids[] = $row;
 }
 */
