@@ -20,11 +20,18 @@ if (isset($_GET["id"])) {
 
         echo $layout_content;
     }
-    $content = "Лот не найден";
-    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "categories" => $categories, "content" => $content]);
 
+    http_response_code(404);
+    $page_name = "404 Страница не найдена";
+    $content = include_template("404.php", ["categories" => $categories]);
+    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $page_name, "categories" => $categories, "content" => $content]);
     echo $layout_content;
 
 } else {
     http_response_code(404);
+    $page_name = "404 Страница не найдена";
+    $content = include_template("404.php", ["categories" => $categories]);
+    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $page_name, "categories" => $categories, "content" => $content]);
+    echo $layout_content;
+    // как избежать повторения дважды? первое условие проверяет что get-параметр пришел, а второе - id корректный и товар такой есть
 }
