@@ -31,3 +31,10 @@ function countPassTime(string $registerDate) {
     $minutesPassed = ceil(($timePassed % 3600) / 60);
     return [$hoursPassed, $minutesPassed];
 }
+
+function showNotFoundPage($categories, $is_auth, $user_name) {
+    $page_name = "404 Страница не найдена";
+    $content = include_template("404.php", ["categories" => $categories]);
+    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $page_name, "categories" => $categories, "content" => $content]);
+    echo $layout_content;
+};
