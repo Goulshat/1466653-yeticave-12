@@ -33,7 +33,7 @@
                     </span>
 
                     <h3 class="lot__title">
-                        <a class="text-link" href="pages/lot.html">
+                        <a class="text-link" href="lot.php?id=<?= html_sc($product["id"]);?>">
                             <?= html_sc($product["name"]);?>
                         </a>
                     </h3>
@@ -42,7 +42,7 @@
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost">
-                                <?= html_sc(showPrice($product["price"]))?>
+                                <?= html_sc(showPrice($product["current_price"]))?>
                             </span>
                         </div>
                         <?php list($hours, $minutes) = countLeftTime($product["date_expire"]);?>
