@@ -82,12 +82,6 @@ FROM lots JOIN category ON lots.category_id=category.id WHERE lots.id=3;
 SELECT amount, date_register
 FROM bid WHERE lot_id=3 ORDER BY date_register DESC;
 
-/* ----- получить список всех ставок ----- */
-SELECT bid.amount, bid.date_register, bid.lot_id AS `bid_lot_id`, users.name AS `bid_user_name`, users.id AS `bid_user_id`
-FROM bid
-JOIN users ON bid.user_id=users.id
-ORDER BY date_register DESC;
-
 /* ---- добавить еще один лот ----- */
 INSERT INTO lots (name, description, img, date_register, date_expire, price, bid_step, category_id, author_user_id, winner_user_id)
 VALUES ('Крутой такой шлем с ярким принтом вот здесь', 'Крутой такой шлем с ярким принтом вот здесь', 'img/lot-7.jpg', '2021-12-10', '2022-01-10', 5000, 250, 6, 1, null);
@@ -95,13 +89,13 @@ VALUES ('Крутой такой шлем с ярким принтом вот з
 /* ----- получить самые новые, открытые лоты ----- */
 SELECT lots.name, lots.price, lots.img AS `url`,
 category.name AS `category`, lots.date_expire AS `date_expire`,
-IFNULL(MAX(bid.amount), lots.price) AS `current_price`,
-lots.date_register, lots.bid_step
+IFNULL(MAX(bid.amount), lots.price) AS `price`,
+lots.date_register
 FROM lots
 JOIN category ON lots.category_id=category.id
 LEFT OUTER JOIN bid ON lots.id=bid.lot_id
 WHERE winner_user_id IS NULL
-GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register, lots.date_expire, lots.bid_step
+GROUP BY lots.name, lots.price, lots.img, category.name, lots.date_register, lots.date_expire
 ORDER BY lots.date_register DESC;
 
 /* ----- обновить время date_expire ----- */
@@ -128,3 +122,25 @@ INSERT INTO users (email, password, name, contacts, date_register) VALUES ('supe
 INSERT INTO users (email, password, name, contacts, date_register) VALUES ('superman@gmail.com', '12345!Zx', 'Евгений', '89171234578', '2021-11-02');
 INSERT INTO users (email, password, name, contacts, date_register) VALUES ('hero@gmail.com', '12345!Zx', 'Семён', '89171234578', '2021-11-02');
 INSERT INTO users (email, password, name, contacts, date_register) VALUES ('oneandonlyone@gmail.com', '12345!Zx', 'Владислав', '89171234578', '2021-11-02');
+
+/* ----- Получить данные об одном лоте ----- */
+SELECT lots.name, lots.price, lots.img AS `url`, lots.description,
+category.name AS `category_name`, category.title AS `category_title`, lots.date_expire AS `date_expire`,
+IFNULL(MAX(bid.amount), lots.price) AS `current_price`,
+lots.date_register, lots.bid_step
+FROM lots
+JOIN category ON lots.category_id=category.id
+LEFT OUTER JOIN bid ON lots.id=bid.lot_id
+WHERE lots.id=3
+GROUP BY lots.name, lots.price, lots.img, lots.description, lots.date_register, lots.date_expire;
+
+/* ----- получить список всех ставок по одному лоту  ----- */
+SELECT bid.amount, bid.date_register, bid.lot_id AS `bid_lot_id`, users.name AS `bid_user_name`
+FROM bid
+JOIN users ON bid.user_id=users.id
+WHERE lot_id=3 ORDER BY date_register DESC;
+
+/* ----- Добавить свежие ставки для лота #2 ----- */
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (169999, '2022-04-10 13:40:00', 2, 2);
+UPDATE bid SET date_register="2022-04-10 13:45:00", amount='169999' WHERE id=25;
+INSERT INTO bid (amount, date_register, user_id, lot_id) VALUES (170999, '2022-04-10 19:50:00', 1, 2);

@@ -24,3 +24,10 @@ function countLeftTime(string $expireDate) {
     $minutesLeft = ceil(($timeLeft % 3600) / 60);
     return [str_pad($hoursLeft, 2, "0", STR_PAD_LEFT), str_pad($minutesLeft, 2, "0", STR_PAD_LEFT)];
 }
+
+function countPassTime(string $registerDate) {
+    $timePassed = time() - strtotime($registerDate);
+    $hoursPassed = floor($timePassed / 3600);
+    $minutesPassed = ceil(($timePassed % 3600) / 60);
+    return [$hoursPassed, $minutesPassed];
+}
