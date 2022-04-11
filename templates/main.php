@@ -14,13 +14,19 @@
     </section>
 
     <section class="lots">
+        <?php if(!$products): ?>
+
+        <div class="lots__header">
+            <h2>Скоро здесь будут новинки и крутые ништячки</h2>
+        </div>
+
+        <?php else: ?>
         <div class="lots__header">
             <h2>Открытые лоты</h2>
         </div>
 
         <ul class="lots__list">
             <?php foreach($products as $id => $product):?>
-
             <li class="lots__item lot">
                 <div class="lot__image">
                     <img src="<?= html_sc($product["url"])?>" width="350" height="260"
@@ -33,7 +39,7 @@
                     </span>
 
                     <h3 class="lot__title">
-                        <a class="text-link" href="pages/lot.html">
+                        <a class="text-link" href="lot.php?id=<?= html_sc($product["id"]);?>">
                             <?= html_sc($product["name"]);?>
                         </a>
                     </h3>
@@ -42,7 +48,7 @@
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost">
-                                <?= html_sc(showPrice($product["price"]))?>
+                                <?= html_sc(showPrice($product["current_price"]))?>
                             </span>
                         </div>
                         <?php list($hours, $minutes) = countLeftTime($product["date_expire"]);?>
@@ -53,8 +59,8 @@
                     </div>
                 </div>
             </li>
-
             <?php endforeach; ?>
         </ul>
+        <?php endif; ?>
     </section>
 </main>
