@@ -13,7 +13,7 @@ if (!isset($_GET["id"]) ) {
     showNotFoundPage($categories, $is_auth, $user_name);
 }
 
-$product_id = html_sc($_GET["id"]);
+$product_id = $_GET["id"];
 $product = getProductData($product_id, $db);
 
 if (!$product) {

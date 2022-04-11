@@ -1,5 +1,3 @@
-<?php $error_message = "Скоро здесь появятся активные лоты"; ?>
-
 <main class="container">
     <section class="promo">
         <h2 class="promo__title">Нужен стафф для катки?</h2>
@@ -16,11 +14,10 @@
     </section>
 
     <section class="lots">
-        <?php $products = getActiveProducts($db);?>
         <?php if(!$products): ?>
 
         <div class="lots__header">
-            <h2><?= html_sc($error_message)?></h2>
+            <h2>Скоро здесь будут новинки и крутые ништячки</h2>
         </div>
 
         <?php else: ?>

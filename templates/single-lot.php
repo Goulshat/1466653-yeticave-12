@@ -58,7 +58,6 @@
 
                         <?php
                         list($hoursPassed, $minutesPassed) = countPassTime($bid["date_register"]);
-
                         if (intval($hoursPassed) < 1) {
                             if (intval($minutesPassed) === 1) {
                                 echo "Минуту назад";
@@ -72,6 +71,7 @@
                             echo date("d.m.Y", strtotime($bid["date_register"])) . " в " . date("H:i:s", strtotime($bid["date_register"]));
                         }
                         ?>
+
                         </td>
                     </tr>
                     <?php endforeach; ?>
