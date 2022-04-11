@@ -12,17 +12,11 @@ if (!file_exists("config.php")) {
     trigger_error($msg,E_USER_ERROR);
 }
 
-$db_host = $config["db"]["host"];
-$db_username = $config["db"]["username"];
-$db_password = $config["db"]["password"];
-$db_dbname = $config["db"]["dbname"];
-$db_port = $config["db"]["port"];
-$db_charset = $config["db"]["charset"];
-
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-$db =  new mysqli($db_host, $db_username, $db_password,$db_dbname, $db_port);
-$db->set_charset($db_charset);
+$db =  new mysqli($config["db"]["host"], $config["db"]["username"], $config["db"]["password"], $config["db"]["dbname"], $config["db"]["port"]);
+$db->set_charset($config["db"]["charset"]);
+
 
 $sql = "
 SELECT * FROM `category`;";
@@ -74,10 +68,10 @@ function getProductData($product_id, $db) {
 /* ----- получить список всех ставок по одному лоту  ----- */
 function getProductBids($product_id, $db) {
     $sql = "
-    SELECT bid.amount, bid.date_register, bid.lot_id AS `bid_lot_id`, users.name AS `bid_user_name`
+    SELECT bid.amount, bid.date_register, users.name AS `bid_user_name`
     FROM bid
     JOIN users ON bid.user_id=users.id
-    WHERE lot_id=? ORDER BY date_register DESC;
+    WHERE bid.lot_id=? ORDER BY date_register DESC;
     ";
 
     $stmt = $db->prepare($sql);

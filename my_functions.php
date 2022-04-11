@@ -33,7 +33,9 @@ function countPassTime(string $registerDate) {
 }
 
 function showNotFoundPage($categories, $is_auth, $user_name, $error_message = "404 Страница не найдена") {
+    http_response_code(404);
     $content = include_template("404.php", ["categories" => $categories, "error_message" => $error_message]);
     $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $error_message, "categories" => $categories, "content" => $content]);
     echo $layout_content;
+    exit();
 };

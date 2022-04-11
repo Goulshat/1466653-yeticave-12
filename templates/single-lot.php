@@ -1,13 +1,4 @@
-<?php
-$product_name = $product["name"];
-$product_category_name = $product["category_name"];
-$product_category_title = $product["category_title"];
-$product_description = $product["description"];
-$current_price = $product["current_price"];
-$product_url = $product["url"];
-$bid_step = $product["bid_step"];
-list($hours, $minutes) = countLeftTime($product["date_expire"]);
-?>
+<?php list($hours, $minutes) = countLeftTime($product["date_expire"]); ?>
 
 <main>
     <nav class="nav">
@@ -20,16 +11,16 @@ list($hours, $minutes) = countLeftTime($product["date_expire"]);
         </ul>
     </nav>
     <section class="lot-item container">
-        <h2><?= html_sc($product_name); ?></h2>
+        <h2><?= html_sc($product["name"]); ?></h2>
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="<?= html_sc($product_url); ?>" width="730" height="548" alt="<?= html_sc($product_name); ?>">
+                    <img src="<?= html_sc($product["url"]); ?>" width="730" height="548" alt="<?= html_sc($product["name"]); ?>">
                 </div>
             <p class="lot-item__category">Категория:
-                <span><?= html_sc($product_category_title); ?></span>
+                <span><?= html_sc($product["category_title"]); ?></span>
             </p>
-            <p class="lot-item__description"><?= html_sc($product_description); ?>
+            <p class="lot-item__description"><?= html_sc($product["description"]); ?>
             </p>
         </div>
         <div class="lot-item__right">
@@ -40,16 +31,16 @@ list($hours, $minutes) = countLeftTime($product["date_expire"]);
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?= html_sc($current_price);?></span>
+                        <span class="lot-item__cost"><?= html_sc($product["current_price"]);?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= html_sc($bid_step); ?></span>
+                        Мин. ставка <span><?= html_sc($product["bid_step"]); ?></span>
                     </div>
                 </div>
                 <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
                     <p class="lot-item__form-item form__item form__item--invalid">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="text" name="cost" placeholder="<?= html_sc($current_price + $bid_step); ?>">
+                        <input id="cost" type="text" name="cost" placeholder="<?= html_sc($product["current_price"] + $product["bid_step"]); ?>">
                         <span class="form__error">Введите наименование лота</span>
                     </p>
 
@@ -57,7 +48,7 @@ list($hours, $minutes) = countLeftTime($product["date_expire"]);
                 </form>
             </div>
             <div class="history">
-                <h3>История ставок (<span><?= count($product_bids); ?></span>)</h3>
+                <h3>История ставок (<span><?= html_sc(count($product_bids)); ?></span>)</h3>
                 <table class="history__list">
                     <?php foreach($product_bids as $id => $bid):?>
                     <tr class="history__item">

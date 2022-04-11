@@ -1,3 +1,5 @@
+<?php $error_message = "Скоро здесь появятся активные лоты"; ?>
+
 <main class="container">
     <section class="promo">
         <h2 class="promo__title">Нужен стафф для катки?</h2>
@@ -14,13 +16,20 @@
     </section>
 
     <section class="lots">
+        <?php $products = getActiveProducts($db);?>
+        <?php if(!$products): ?>
+
+        <div class="lots__header">
+            <h2><?= html_sc($error_message)?></h2>
+        </div>
+
+        <?php else: ?>
         <div class="lots__header">
             <h2>Открытые лоты</h2>
         </div>
 
         <ul class="lots__list">
             <?php foreach($products as $id => $product):?>
-
             <li class="lots__item lot">
                 <div class="lot__image">
                     <img src="<?= html_sc($product["url"])?>" width="350" height="260"
@@ -53,8 +62,8 @@
                     </div>
                 </div>
             </li>
-
             <?php endforeach; ?>
         </ul>
+        <?php endif; ?>
     </section>
 </main>
