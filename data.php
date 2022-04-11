@@ -29,7 +29,7 @@ SELECT * FROM `category`;";
 $result = $db->query($sql);
 $categories = $result->fetch_all(MYSQLI_ASSOC);
 
-
+/* ----- Получить список активных лотов ----- */
 function getActiveProducts($db) {
     $sql = "
     SELECT lots.name, lots.price, lots.img AS `url`, lots.description, lots.id,
@@ -48,7 +48,6 @@ function getActiveProducts($db) {
 
     return $data;
 };
-
 
 /* ----- Получить данные об одном лоте ----- */
 function getProductData($product_id, $db) {

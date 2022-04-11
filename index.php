@@ -19,6 +19,7 @@ if ($active_products) {
     exit();
 };
 
+$error_message = "Скоро здесь появятся лоты";
 http_response_code(404);
-showNotFoundPage($categories, $is_auth, $user_name);
+showNotFoundPage($categories, $is_auth, $user_name, $error_message);
 echo $layout_content;

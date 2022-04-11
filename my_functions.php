@@ -32,9 +32,8 @@ function countPassTime(string $registerDate) {
     return [$hoursPassed, $minutesPassed];
 }
 
-function showNotFoundPage($categories, $is_auth, $user_name) {
-    $page_name = "404 Страница не найдена";
-    $content = include_template("404.php", ["categories" => $categories]);
-    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $page_name, "categories" => $categories, "content" => $content]);
+function showNotFoundPage($categories, $is_auth, $user_name, $error_message = "404 Страница не найдена") {
+    $content = include_template("404.php", ["categories" => $categories, "error_message" => $error_message]);
+    $layout_content = include_template("layout.php", ["is_auth" => $is_auth, "user_name" => $user_name, "page_name" => $error_message, "categories" => $categories, "content" => $content]);
     echo $layout_content;
 };

@@ -1,6 +1,4 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
 $product_name = $product["name"];
 $product_category_name = $product["category_name"];
 $product_category_title = $product["category_title"];
@@ -9,7 +7,6 @@ $current_price = $product["current_price"];
 $product_url = $product["url"];
 $bid_step = $product["bid_step"];
 list($hours, $minutes) = countLeftTime($product["date_expire"]);
-
 ?>
 
 <main>
