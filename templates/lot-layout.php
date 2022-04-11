@@ -1,14 +1,14 @@
 <?php
 date_default_timezone_set("Asia/Yekaterinburg");
 
-$product_name = $product[0]["name"];
-$product_category_name = $product[0]["category_name"];
-$product_category_title = $product[0]["category_title"];
-$product_description = $product[0]["description"];
-$current_price = $product[0]["current_price"];
-$product_url = $product[0]["url"];
-$bid_step = $product[0]["bid_step"];
-list($hours, $minutes) = countLeftTime($product[0]["date_expire"]);
+$product_name = $product["name"];
+$product_category_name = $product["category_name"];
+$product_category_title = $product["category_title"];
+$product_description = $product["description"];
+$current_price = $product["current_price"];
+$product_url = $product["url"];
+$bid_step = $product["bid_step"];
+list($hours, $minutes) = countLeftTime($product["date_expire"]);
 
 ?>
 
