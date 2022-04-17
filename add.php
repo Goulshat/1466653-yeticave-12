@@ -28,36 +28,31 @@ if($_POST) {
     <?= print_r($empty_fields); ?>
     </pre>
     <?php
+
     //вторая проверка на корректность
     $errors = validateAddLotForm($_POST, $categories);
     ?>
     <pre>
     Вторая проверка на корректность введенных данных:
     <?= var_dump($errors); ?>
-    <?= var_dump($_POST); ?>
     </pre>
     <?php
-    // проверка на наличие фото лота
-    $new_img_valid = validateFile($_FILES["lot-img"]);
-    if(!$new_img_valid) {
+
+    if(!$_FILES["lot-img"]["name"]) {
         $empty_fields[] = "lot-img";
-        echo "Нет фотографии lot-img";
     } else {
         $new_img = $_FILES["lot-img"];
-        $img_info = new SplFileInfo($_FILES["lot-img"]["name"]);
-        $img_extns = $img_info->getExtension();
+        $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
 
-        if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png") {
-            $_POST["url"] = __DIR__ . "/uploads/img/lots/" . $new_img["name"]; //проверка на уникальность?
+        if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
+            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"]; //проверка на уникальность?
             move_uploaded_file($new_img["tmp_name"], $_POST["url"]);
         } else {
             $errors[] = "lot-photo-type";
-            echo " lot-photo-type-error ";
         };
     };
 
     if($empty_fields || $errors) {
-        echo "Пустые поля: " . var_dump($empty_fields) . "Ошибки валидации: " . var_dump($errors);
         $content = include_template("add-lot.php", [
             "categories" => $categories,
             "empty_fields" => $empty_fields,
@@ -83,13 +78,8 @@ if($_POST) {
         };
 
         $new_lot_id = $db->insert_id;
-        ?>
-        <pre>
-            <p>Лот добавлен. ID: <?= var_dump($errors); ?></p>
-            <p>Лот добавлен. ID: <?= var_dump($empty_fields); ?></p>
-            <p>Лот добавлен. ID: <?= var_dump($new_lot_id); ?></p>
-        </pre>
-        <?php
+
+        header('Location: /lot.php?id=' . $new_lot_id);
     }
 } else {
     $content = include_template("add-lot.php", ["categories" => $categories]);

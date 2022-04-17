@@ -65,28 +65,12 @@ function validateIsFilled($required_fields) { //'lot-name', 'description'
             echo "Пустое поле в цикле " . var_dump($value);
         }
     }
-    return $empty_fields; //
-};
-
-function validateFile($file) { //
-    $valid = 1;
-    foreach ($file as $id => $value) {
-        if(empty($value)) {
-            $valid = 0;
-        }
-    }
-    return $valid;
+    return $empty_fields;
 };
 
 function validateAddLotForm($fields, $categories) {
-    // $fields - поля массива $_POST, т.е. пары ключ-значение
     $errors_array = [];
-    ?>
-    <pre>
-    Передаю в цикл
-    <?= var_dump($fields); ?>
-    </pre>
-    <?php
+
     foreach($fields as $key => $value) {
         if($key === "lot-name" || $key === "description") {
             $value = trim($value);
@@ -96,16 +80,6 @@ function validateAddLotForm($fields, $categories) {
             $value = filter_var($value, FILTER_VALIDATE_FLOAT);
             if($value < 0) {
                 $errors_array[] = "start-price-error";
-                echo $value . "start-price-error, ";
-
-        ?>
-        <pre>
-        Проверка "start-price"
-        <?= var_dump($key); ?>
-        <?= var_dump($value); ?>
-        <?= var_dump($errors_array); ?>
-        </pre>
-        <?php
             }
         }
 
@@ -113,75 +87,31 @@ function validateAddLotForm($fields, $categories) {
             $value = filter_var($value, FILTER_VALIDATE_INT);
             if($value === false) {
                 $errors_array[] = "bid-step-error";
-        ?>
-        <pre>
-        Проверка "bid-step"
-        <?= var_dump($key); ?>
-        <?= var_dump($value); ?>
-        <?= var_dump($errors_array); ?>
-        </pre>
-        <?php
             }
             //хорошо бы max min, то требований в ТЗ на это нет
         }
 
-        if($key === "category") {
-            $category = array_values($categories);
-            array_search($category, $categories);
-            if(!$category) {
-                $errors_array[] = "category-error";
-                echo $value . "category-error, ";
-            } else {
-                echo "Категория найдена" . $category;
-            };
-
-        ?>
-        <pre>
-        Проверка "category"
-        <?= var_dump($categories); ?>
-        <?= var_dump($category); ?>
-        <?= var_dump($key); ?>
-        <?= var_dump($value); ?>
-        <?= var_dump($errors_array); ?>
-        </pre>
-        <?php
-        }
+        // if($key === "category") {
+        //     $category = array_values($categories);
+        //     array_search($category, $categories);
+        //     if(!$category) {
+        //         $errors_array[] = "category-error";
+        //     } else {
+        //         echo "Категория найдена";
+        //     };
+        // }
 
         if($key === "date-expire") {
             $time_left = strtotime($value) - time();
             if($time_left < 86000) {
                 $errors_array[] = "date-expire-error";
-                ?>
-                <pre>
-                Проверка "date-expire < 86000"
-                <?= var_dump($key); ?>
-                <?= var_dump($value); ?>
-                <?= var_dump($errors_array); ?>
-                </pre>
-                <?php
             }
 
             $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $value);
             if(!$date_format) {
                 $errors_array[] = "date-format-error";
-                ?>
-                <pre>
-                Проверка "date-format"
-                <?= var_dump($key); ?>
-                <?= var_dump($value); ?>
-                <?= var_dump($errors_array); ?>
-                </pre>
-                <?php
             }
         }
-
-        ?>
-        <pre>
-        Цикл прошел для
-        <?= var_dump($key); ?>&nbsp;=&nbsp;
-        <?= var_dump($value); ?>
-        </pre>
-        <?php
     };
     return $errors_array;
 };

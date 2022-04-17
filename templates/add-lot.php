@@ -24,7 +24,7 @@
                 <select id="category" name="category">
                     <option value="null"> - Выберите из списка - </option>
                     <?php foreach($categories as $category => $value): ?>
-                    <option value="<?= html_sc($value["name"]); ?>"><?= html_sc($value["title"]); ?></option>
+                    <option value="<?= html_sc($value["id"]); ?>"><?= html_sc($value["title"]); ?></option>
                     <?php endforeach; ?>
                 </select>
                 <span class="form__error">Выберите категорию</span>
