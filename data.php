@@ -86,3 +86,14 @@ function getProductBids($product_id, $db) {
 
     return $data;
 };
+
+/* ----- Отправить данные о лоте в БД  ----- */
+
+function insertNewProduct($values, $db) {
+    $sql = "
+    INSERT INTO lots (name, description, img, date_expire, price, bid_step, category_id, author_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    ";
+
+    $stmt = db_get_prepare_stmt($db, $sql, $values);
+    return $stmt;
+};
