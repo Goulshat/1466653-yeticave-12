@@ -10,6 +10,8 @@ $is_auth = rand(0, 1);
 $user_name = "Гульшат";
 
 $page_name = "Добавить новый лот";
+$bid_step_min = "50";
+$bid_step_max = "10000";
 
 ?>
 <pre>
@@ -17,78 +19,131 @@ $page_name = "Добавить новый лот";
 <?= var_dump($_FILES); ?>
 </pre>
 <?php
+$errors = [];
 
 if($_POST) {
-    $required_fields = ["lot-name", "description", "date-expire", "start-price", "bid-step", "category"];
-    //проверка на пустые поля
-    $empty_fields = validateIsFilled($required_fields);
+    $_POST["lot-name"] = trim($_POST["lot-name"]);
+    $_POST["description"] = trim($_POST["description"]);
+    $_POST["start-price"] = trim($_POST["start-price"]);
+    $_POST["bid-step"] = trim($_POST["bid-step"]);
+    $_POST["date-expire"] = trim($_POST["date-expire"]);
+    // цикл
     ?>
-    <pre>
-    Первая проверка на пустые поля:
-    <?= print_r($empty_fields); ?>
+    <pre> Прогон через trim():
+    <?= var_dump($_POST); ?>
     </pre>
     <?php
+    // $_POST["lot-name"] = filter_var($_POST["lot-name"], FILTER_SANITIZE_SPECIAL_CHARS);
+    // $_POST["description"] = filter_var($_POST["description"], FILTER_SANITIZE_SPECIAL_CHARS);
+    // $_POST["start-price"] = filter_var($_POST["start-price"], FILTER_SANITIZE_SPECIAL_CHARS);
+    // $_POST["bid-step"] = filter_var($_POST["bid-step"], FILTER_SANITIZE_SPECIAL_CHARS);
+    // $_POST["date-expire"] = filter_var($_POST["date-expire"], FILTER_SANITIZE_SPECIAL_CHARS);
 
-    //вторая проверка на корректность
-    $errors = validateAddLotForm($_POST, $categories);
+    ?>
+    <!-- <pre>Прогон через FILTER_SANITIZE_SPECIAL_CHARS: - не сработал
+    <?= var_dump($_POST); ?>
+    </pre> -->
+    <?php
+    if(empty($_POST["lot-name"])) {
+        $errors[] = "lot-name-empty";
+    }
+
+    if(empty($_POST["description"])) {
+        $errors[] = "description-empty";
+    }
+
+    if(empty($_POST["start-price"])) {
+        $errors[] = "start-price-empty";
+    } else {
+        $_POST["start-price"] = filter_var($_POST["start-price"], FILTER_VALIDATE_FLOAT);
+
+        if($_POST["start-price"] < 0) {
+            $errors[] = "start-price-unvalid";
+        }
+    }
+
+    if(empty($_POST["bid-step"])) {
+        $errors[] = "bid-step-empty";
+    } else {
+        $_POST["bid-step"] = filter_var($_POST["bid-step"], FILTER_VALIDATE_INT, [
+            "default" => 0,
+            "min-range" => $bid_step_min,
+            "max-range" => $bid_step_max,
+        ]); // не работает
+
+        if(!$_POST["bid-step"]) {
+            $errors[] = "bid-step-range-error";
+        }
+    }
+
+    if(empty($_POST["category"])) {
+        $errors[] = "category-empty";
+    }
+
+    if(empty($_POST["date-expire"])) {
+        $errors[] = "date-expire-empty";
+    } else {
+        $time_left = strtotime($_POST["date-expire"]) - time();
+        if($time_left < 86000) {
+            $errors[] = "date-expire-error";
+        } else {
+            $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $_POST["date-expire"]);
+
+            if(!$date_format) {
+                $errors[] = "date-format-error";
+            }
+        }
+    }
+
     ?>
     <pre>
-    Вторая проверка на корректность введенных данных:
+    Результат валидации:
     <?= var_dump($errors); ?>
     </pre>
     <?php
-
-    if(!$_FILES["lot-img"]["name"]) {
-        $empty_fields[] = "lot-img";
+    if(!isset($_FILES["lot-img"]["name"])) {
+        $errors[] = "lot-img-empty";
     } else {
         $new_img = $_FILES["lot-img"];
         $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
 
         if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
-            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"]; //проверка на уникальность?
+            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"];
             move_uploaded_file($new_img["tmp_name"], $_POST["url"]);
         } else {
             $errors[] = "lot-photo-type";
         };
     };
+    ?>
+    <pre>
+    Проверка изображения:
+    <?= var_dump($errors); ?>
 
-    if($empty_fields || $errors) {
-        $content = include_template("add-lot.php", [
-            "categories" => $categories,
-            "empty_fields" => $empty_fields,
-            "errors" => $errors,
-        ]);
-    } else {
-        $new_lot_to_db = [
-            "name" => $_POST["lot-name"],
-            "description" => $_POST["description"],
-            "img" => $_POST["url"],
-            "date_expire" => $_POST["date-expire"],
-            "price" => $_POST["start-price"],
-            "bid_step" => $_POST["bid-step"],
-            "category_id" => $_POST["category"],
-            "author_user_id" => 1, //$_POST["author_user_id"]
-        ];
+    Готово к отправке в ДБ:
+    <?= var_dump($_POST); ?>
+    </pre>
+    <?php
 
-        $stmt = insertNewProduct($new_lot_to_db, $db);
-        $respond = $stmt->execute();
-
-        if(!$respond) {
-            $errors[] = "no-db-respond";
-        };
+    if(count($errors) === 0) {
+        insertNewProduct($_POST["lot-name"], $_POST["description"], $_POST["url"], $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
 
         $new_lot_id = $db->insert_id;
 
         header('Location: /lot.php?id=' . $new_lot_id);
+        exit();
     }
-} else {
-    $content = include_template("add-lot.php", ["categories" => $categories]);
 };
+
+$content = include_template("add-lot.php", [
+    "categories" => $categories,
+    "errors" => $errors,
+]);
 
 $layout_content = include_template("layout.php", [
     "is_auth" => $is_auth,
     "user_name" => $user_name,
     "page_name" => $page_name,
     "categories" => $categories,
-    "content" => $content]);
+    "content" => $content,
+]);
 echo $layout_content;

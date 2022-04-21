@@ -1,3 +1,8 @@
+<pre>
+    Ошибки, переданные в шаблон:
+    <?= var_dump($errors); ?>
+    </pre>
+
 <main>
     <nav class="nav">
         <ul class="nav__list container">
@@ -22,7 +27,7 @@
             <div class="form__item">
                 <label for="category">Категория <sup>*</sup></label>
                 <select id="category" name="category">
-                    <option value="null"> - Выберите из списка - </option>
+                    <option value="0"> - Выберите из списка - </option>
                     <?php foreach($categories as $category => $value): ?>
                     <option value="<?= html_sc($value["id"]); ?>"><?= html_sc($value["title"]); ?></option>
                     <?php endforeach; ?>

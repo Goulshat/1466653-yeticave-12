@@ -68,50 +68,9 @@ function validateIsFilled($required_fields) { //'lot-name', 'description'
     return $empty_fields;
 };
 
-function validateAddLotForm($fields, $categories) {
-    $errors_array = [];
-
-    foreach($fields as $key => $value) {
-        if($key === "lot-name" || $key === "description") {
-            $value = trim($value);
-        }
-
-        if($key === "start-price") {
-            $value = filter_var($value, FILTER_VALIDATE_FLOAT);
-            if($value < 0) {
-                $errors_array[] = "start-price-error";
-            }
-        }
-
-        if($key === "bid-step") {
-            $value = filter_var($value, FILTER_VALIDATE_INT);
-            if($value === false) {
-                $errors_array[] = "bid-step-error";
-            }
-            //хорошо бы max min, то требований в ТЗ на это нет
-        }
-
-        // if($key === "category") {
-        //     $category = array_values($categories);
-        //     array_search($category, $categories);
-        //     if(!$category) {
-        //         $errors_array[] = "category-error";
-        //     } else {
-        //         echo "Категория найдена";
-        //     };
-        // }
-
-        if($key === "date-expire") {
-            $time_left = strtotime($value) - time();
-            if($time_left < 86000) {
-                $errors_array[] = "date-expire-error";
-            }
-
-            $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $value);
-            if(!$date_format) {
-                $errors_array[] = "date-format-error";
-            }
-        }
-    };
-    return $errors_array;
-};
+function trimInputData($values) {
+    foreach ($values as $key => $value) {
+        $value = trim($value);
+        return $value;
+    }
+}

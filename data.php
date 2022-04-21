@@ -89,11 +89,16 @@ function getProductBids($product_id, $db) {
 
 /* ----- Отправить данные о лоте в БД  ----- */
 
-function insertNewProduct($values, $db) {
+function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id, $db) {
     $sql = "
-    INSERT INTO lots (name, description, img, date_expire, price, bid_step, category_id, author_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    INSERT INTO lots (name, description, img, date_expire, price, bid_step, category_id, author_user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     ";
 
-    $stmt = db_get_prepare_stmt($db, $sql, $values);
-    return $stmt;
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("ssssdiii", $name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result;
 };
