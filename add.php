@@ -5,7 +5,6 @@ require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
 
-
 $is_auth = rand(0, 1);
 $user_name = "Гульшат";
 
@@ -95,12 +94,6 @@ if($_POST) {
         }
     }
 
-    ?>
-    <pre>
-    Результат валидации:
-    <?= var_dump($errors); ?>
-    </pre>
-    <?php
     if(!isset($_FILES["lot-img"]["name"])) {
         $errors[] = "lot-img-empty";
     } else {
@@ -108,21 +101,12 @@ if($_POST) {
         $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
 
         if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
-            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"];
-            move_uploaded_file($new_img["tmp_name"], $_POST["url"]);
+            $_POST["url"] = __DIR__ . "/uploads/img/lots/" . $new_img["name"];
+            move_uploaded_file($_FILES["lot-img"]["tmp_name"], $_POST["url"]);
         } else {
             $errors[] = "lot-photo-type";
         };
     };
-    ?>
-    <pre>
-    Проверка изображения:
-    <?= var_dump($errors); ?>
-
-    Готово к отправке в ДБ:
-    <?= var_dump($_POST); ?>
-    </pre>
-    <?php
 
     if(count($errors) === 0) {
         insertNewProduct($_POST["lot-name"], $_POST["description"], $_POST["url"], $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
