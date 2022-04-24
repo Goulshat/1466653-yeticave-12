@@ -1,12 +1,8 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
+require_once("settings.php");
 require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
-
-$is_auth = rand(0, 1);
-$user_name = "Гульшат";
 
 
 if (!isset($_GET["id"]) ) {

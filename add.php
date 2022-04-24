@@ -1,48 +1,24 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
+require_once("settings.php");
 require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
 
-$is_auth = rand(0, 1);
-$user_name = "Гульшат";
-
 $page_name = "Добавить новый лот";
-$bid_step_min = "50";
-$bid_step_max = "10000";
 
 ?>
-<pre>
+<!-- <pre>
 <?= var_dump($_POST); ?>
 <?= var_dump($_FILES); ?>
-</pre>
+</pre> -->
 <?php
 $errors = [];
 
 if($_POST) {
-    $_POST["lot-name"] = trim($_POST["lot-name"]);
-    $_POST["description"] = trim($_POST["description"]);
-    $_POST["start-price"] = trim($_POST["start-price"]);
-    $_POST["bid-step"] = trim($_POST["bid-step"]);
-    $_POST["date-expire"] = trim($_POST["date-expire"]);
-    // цикл
-    ?>
-    <pre> Прогон через trim():
-    <?= var_dump($_POST); ?>
-    </pre>
-    <?php
-    // $_POST["lot-name"] = filter_var($_POST["lot-name"], FILTER_SANITIZE_SPECIAL_CHARS);
-    // $_POST["description"] = filter_var($_POST["description"], FILTER_SANITIZE_SPECIAL_CHARS);
-    // $_POST["start-price"] = filter_var($_POST["start-price"], FILTER_SANITIZE_SPECIAL_CHARS);
-    // $_POST["bid-step"] = filter_var($_POST["bid-step"], FILTER_SANITIZE_SPECIAL_CHARS);
-    // $_POST["date-expire"] = filter_var($_POST["date-expire"], FILTER_SANITIZE_SPECIAL_CHARS);
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = trim($value);
+    };
 
-    ?>
-    <!-- <pre>Прогон через FILTER_SANITIZE_SPECIAL_CHARS: - не сработал
-    <?= var_dump($_POST); ?>
-    </pre> -->
-    <?php
     if(empty($_POST["lot-name"])) {
         $errors[] = "lot-name-empty";
     }
@@ -56,23 +32,19 @@ if($_POST) {
     } else {
         $_POST["start-price"] = filter_var($_POST["start-price"], FILTER_VALIDATE_FLOAT);
 
-        if($_POST["start-price"] < 0) {
+        if($_POST["start-price"] <= 0) {
             $errors[] = "start-price-unvalid";
         }
     }
 
     if(empty($_POST["bid-step"])) {
         $errors[] = "bid-step-empty";
-    } else {
-        $_POST["bid-step"] = filter_var($_POST["bid-step"], FILTER_VALIDATE_INT, [
-            "default" => 0,
-            "min-range" => $bid_step_min,
-            "max-range" => $bid_step_max,
-        ]); // не работает
+    } else  {
+        $_POST["bid-step"] = intval($_POST["bid-step"]);
 
-        if(!$_POST["bid-step"]) {
+        if($_POST["bid-step"] <= $bid_step_min || $_POST["bid-step"] >= $bid_step_max) {
             $errors[] = "bid-step-range-error";
-        }
+        };
     }
 
     if(empty($_POST["category"])) {
@@ -94,7 +66,7 @@ if($_POST) {
         }
     }
 
-    if(!isset($_FILES["lot-img"]["name"])) {
+    if(empty($_FILES["lot-img"]["name"])) {
         $errors[] = "lot-img-empty";
     } else {
         $new_img = $_FILES["lot-img"];
@@ -120,6 +92,8 @@ if($_POST) {
 
 $content = include_template("add-lot.php", [
     "categories" => $categories,
+    "bid_step_min" => $bid_step_min,
+    "bid_step_max" => $bid_step_max,
     "errors" => $errors,
 ]);
 
@@ -130,4 +104,5 @@ $layout_content = include_template("layout.php", [
     "categories" => $categories,
     "content" => $content,
 ]);
+
 echo $layout_content;

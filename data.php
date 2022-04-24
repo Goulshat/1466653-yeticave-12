@@ -1,9 +1,4 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 $config = require "config.php";
 require_once("my_functions.php");
 
@@ -12,11 +7,8 @@ if (!file_exists("config.php")) {
     trigger_error($msg,E_USER_ERROR);
 }
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
 $db =  new mysqli($config["db"]["host"], $config["db"]["username"], $config["db"]["password"], $config["db"]["dbname"], $config["db"]["port"]);
 $db->set_charset($config["db"]["charset"]);
-
 
 $sql = "
 SELECT * FROM `category`;";

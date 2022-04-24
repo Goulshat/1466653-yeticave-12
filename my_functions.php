@@ -40,23 +40,6 @@ function showNotFoundPage($categories, $is_auth, $user_name, $error_message = "4
     exit();
 };
 
-/* ----- Функции валидации формы - выделить ли в отдельный файл? ----- */
-// function isEmail($value) {//mail@mail.ru
-    //     return filter_var($value, FILTER_VALIDATE_EMAIL);
-    // };
-
-    // function isFloat($value) {
-    //     return filter_var($value, FILTER_VALIDATE_FLOAT);
-    // }
-
-    // function isInteger($value) { //isBid
-    //     filter_var($value, FILTER_VALIDATE_INT);
-    // }
-
-    // function validateExpireDate($value) { //'date-expire'
-    //     return (strtotime($value) - time()) > 86000; //сек в сутках
-    // }
-
 function validateIsFilled($required_fields) { //'lot-name', 'description'
     $empty_fields = [];
     foreach ($required_fields as $id => $value) {
@@ -67,10 +50,3 @@ function validateIsFilled($required_fields) { //'lot-name', 'description'
     }
     return $empty_fields;
 };
-
-function trimInputData($values) {
-    foreach ($values as $key => $value) {
-        $value = trim($value);
-        return $value;
-    }
-}
