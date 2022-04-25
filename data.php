@@ -1,15 +1,5 @@
 <?php
-$config = require "config.php";
-require_once("my_functions.php");
-
-if (!file_exists("config.php")) {
-    $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
-    trigger_error($msg,E_USER_ERROR);
-}
-
-$db =  new mysqli($config["db"]["host"], $config["db"]["username"], $config["db"]["password"], $config["db"]["dbname"], $config["db"]["port"]);
-$db->set_charset($config["db"]["charset"]);
-
+/* ----- получить категории -----*/
 $sql = "
 SELECT * FROM `category`;";
 $result = $db->query($sql);
@@ -80,7 +70,6 @@ function getProductBids($product_id, $db) {
 };
 
 /* ----- Отправить данные о лоте в БД  ----- */
-
 function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id, $db) {
     $sql = "
     INSERT INTO lots (name, description, img, date_expire, price, bid_step, category_id, author_user_id)
@@ -90,7 +79,7 @@ function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_
     $stmt = $db->prepare($sql);
     $stmt->bind_param("ssssdiii", $name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-
-    return $result;
+    $stmt->get_result();
+    $id = $db->insert_id;
+    return $id;
 };

@@ -1,9 +1,5 @@
 <?php
-require_once("settings.php");
-require_once("course_library.php");
-require_once("my_functions.php");
-require_once("data.php");
-
+require_once("init.php");
 $page_name = "Добавить новый лот";
 
 ?>
@@ -51,17 +47,16 @@ if($_POST) {
         $errors[] = "category-empty";
     }
 
-    if(empty($_POST["date-expire"])) {
+    if(empty($_POST["date-expire"]) || !strtotime($_POST["date-expire"])) {
         $errors[] = "date-expire-empty";
     } else {
-        $time_left = strtotime($_POST["date-expire"]) - time();
-        if($time_left < 86000) {
-            $errors[] = "date-expire-error";
+        $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $_POST["date-expire"]);
+        if(!$date_format) {
+            $errors[] = "date-format-error";
         } else {
-            $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $_POST["date-expire"]);
-
-            if(!$date_format) {
-                $errors[] = "date-format-error";
+            $time_left = strtotime($_POST["date-expire"]) - time();
+            if($time_left < 86000) {
+                $errors[] = "date-expire-error";
             }
         }
     }
@@ -73,18 +68,15 @@ if($_POST) {
         $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
 
         if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
-            $_POST["url"] = __DIR__ . "/uploads/img/lots/" . $new_img["name"];
-            move_uploaded_file($_FILES["lot-img"]["tmp_name"], $_POST["url"]);
+            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"];
+            move_uploaded_file(($_FILES["lot-img"]["tmp_name"]), __DIR__ . $_POST["url"]);
         } else {
             $errors[] = "lot-photo-type";
         };
     };
 
     if(count($errors) === 0) {
-        insertNewProduct($_POST["lot-name"], $_POST["description"], $_POST["url"], $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
-
-        $new_lot_id = $db->insert_id;
-
+        $new_lot_id = insertNewProduct($_POST["lot-name"], $_POST["description"], $_POST["url"], $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
         header('Location: /lot.php?id=' . $new_lot_id);
         exit();
     }

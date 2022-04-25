@@ -1,9 +1,5 @@
 <?php
-require_once("settings.php");
-require_once("course_library.php");
-require_once("my_functions.php");
-require_once("data.php");
-
+require_once("init.php");
 
 if (!isset($_GET["id"]) ) {
     showNotFoundPage($categories, $is_auth, $user_name);
