@@ -1,10 +1,4 @@
 <?php
-/* ----- получить категории -----*/
-$sql = "
-SELECT * FROM `category`;";
-$result = $db->query($sql);
-$categories = $result->fetch_all(MYSQLI_ASSOC);
-
 /* ----- Получить список активных лотов ----- */
 function getActiveProducts($db) {
     $sql = "
@@ -79,7 +73,6 @@ function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_
     $stmt = $db->prepare($sql);
     $stmt->bind_param("ssssdiii", $name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id);
     $stmt->execute();
-    $stmt->get_result();
     $id = $db->insert_id;
     return $id;
 };

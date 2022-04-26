@@ -1,13 +1,6 @@
 <?php
 require_once("init.php");
 $page_name = "Добавить новый лот";
-
-?>
-<!-- <pre>
-<?= var_dump($_POST); ?>
-<?= var_dump($_FILES); ?>
-</pre> -->
-<?php
 $errors = [];
 
 if($_POST) {
@@ -47,18 +40,22 @@ if($_POST) {
         $errors[] = "category-empty";
     }
 
-    if(empty($_POST["date-expire"]) || !strtotime($_POST["date-expire"])) {
-        $errors[] = "date-expire-empty";
-    } else {
-        $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $_POST["date-expire"]);
-        if(!$date_format) {
+    switch($_POST["date-expire"]) {
+        case empty($_POST["date-expire"]):
+            $errors[] = "date-expire-empty";
+            break;
+
+        case !strtotime($_POST["date-expire"]):
+            $errors[] = "date-expire-empty";
+            break;
+
+        case ((strtotime($_POST["date-expire"]) - time()) < 86000) :
+            $errors[] = "date-expire-error";
+            break;
+
+        case preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $_POST["date-expire"]) === false :
             $errors[] = "date-format-error";
-        } else {
-            $time_left = strtotime($_POST["date-expire"]) - time();
-            if($time_left < 86000) {
-                $errors[] = "date-expire-error";
-            }
-        }
+            break;
     }
 
     if(empty($_FILES["lot-img"]["name"])) {
@@ -68,15 +65,15 @@ if($_POST) {
         $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
 
         if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
-            $_POST["url"] = "/uploads/img/lots/" . $new_img["name"];
-            move_uploaded_file(($_FILES["lot-img"]["tmp_name"]), __DIR__ . $_POST["url"]);
+            $new_img_url = "/uploads/img/lots/" . $new_img["name"];
+            move_uploaded_file($_FILES["lot-img"]["tmp_name"], __DIR__ . $new_img_url);
         } else {
             $errors[] = "lot-photo-type";
         };
     };
 
     if(count($errors) === 0) {
-        $new_lot_id = insertNewProduct($_POST["lot-name"], $_POST["description"], $_POST["url"], $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
+        $new_lot_id = insertNewProduct($_POST["lot-name"], $_POST["description"], $new_img_url, $_POST["date-expire"], $_POST["start-price"], $_POST["bid-step"], $_POST["category"], 1, $db);
         header('Location: /lot.php?id=' . $new_lot_id);
         exit();
     }
@@ -87,6 +84,7 @@ $content = include_template("add-lot.php", [
     "bid_step_min" => $bid_step_min,
     "bid_step_max" => $bid_step_max,
     "errors" => $errors,
+    "new_lot" => $_POST,
 ]);
 
 $layout_content = include_template("layout.php", [
