@@ -1,3 +1,10 @@
+<pre>
+    Лот:
+    <?= var_dump($new_lot); ?>
+    Ошибки, переданные в шаблон:
+    <?= var_dump($errors); ?>
+</pre>
+
 <main>
     <nav class="nav">
         <ul class="nav__list container">
@@ -13,13 +20,14 @@
         <h2>Добавление лота</h2>
 
         <div class="form__container-two">
-            <div class="form__item <?php if (in_array("lot-name-empty", $errors)):?> form__item--invalid <?php endif; ?>">
+            <div class="form__item <?php if (isset($errors["lot-name-empty"])):?> form__item--invalid <?php endif; ?>">
                 <label for="lot-name">Наименование <sup>*</sup></label>
-                <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value="<?= $new_lot["lot-name"]; ?>">
-                <span class="form__error">Введите наименование лота</span>
+                <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
+                        value="<?= isset($new_lot["lot-name"]) ? $new_lot["lot-name"] : "" ; ?>">
+                <span class="form__error"><?= isset($errors["lot-name-empty"]) ? $errors["lot-name-empty"] : ""; ?></span>
             </div>
 
-            <div class="form__item <?php if (in_array("category-empty", $errors)):?> form__item--invalid <?php endif; ?>">
+            <div class="form__item <?php if (isset($errors["category-empty"])):?> form__item--invalid <?php endif; ?>">
                 <label for="category">Категория <sup>*</sup></label>
                 <select id="category" name="category">
                     <option value="0"> - Выберите из списка - </option>
@@ -27,17 +35,17 @@
                     <option value="<?= html_sc($value["id"]); ?>"><?= html_sc($value["title"]); ?></option>
                     <?php endforeach; ?>
                 </select>
-                <span class="form__error">Выберите категорию</span>
+                <span class="form__error"><?= isset($errors["category-empty"]) ? $errors["category-empty"] : ""; ?></span>
             </div>
         </div>
 
-        <div class="form__item form__item--wide <?php if (in_array("description-empty", $errors)):?> form__item--invalid <?php endif; ?>">
+        <div class="form__item form__item--wide <?php if (isset($errors["description-empty"])):?> form__item--invalid <?php endif; ?>">
             <label for="message">Описание <sup>*</sup></label>
-            <textarea id="message" name="description" placeholder="Напишите описание лота"><?= $new_lot["description"]; ?></textarea>
-            <span class="form__error">Напишите описание лота</span>
+            <textarea id="message" name="description" placeholder="Напишите описание лота"><?= isset($new_lot["description"]) ? $new_lot["description"] : "" ; ?></textarea>
+            <span class="form__error"><?= isset($errors["description-empty"]) ? $errors["description-empty"] : ""; ?></span>
         </div>
 
-        <div class="form__item form__item--file <?php if (in_array("lot-img-empty", $errors) ||  in_array("lot-photo-type", $errors)):?> form__item--invalid <?php endif; ?>">
+        <div class="form__item form__item--file <?php if (isset($errors["lot-img-empty"]) || isset($errors["lot-photo-type"])):?> form__item--invalid <?php endif; ?>">
             <label>Изображение <sup>*</sup></label>
             <div class="form__input-file">
                 <input class="visually-hidden" name="lot-img" type="file" id="lot-img">
@@ -45,32 +53,33 @@
                     Добавить
                 </label>
             </div>
-            <span class="form__error">
-                <?= in_array("lot-photo-type", $errors) ? "Допустимые форматы: jpeg/jpg, png, webp" : "Добавьте изображение лота"; ?>
-            </span>
+            <span class="form__error"><?= isset($errors["lot-photo-type"]) ? $errors["lot-photo-type"] : $errors["lot-img-empty"]; ?></span>
         </div>
+
         <div class="form__container-three">
-            <div class="form__item form__item--small<?php if (in_array("start-price-empty", $errors) || in_array("start-price-unvalid", $errors)):?> form__item--invalid <?php endif; ?>">
+            <div class="form__item form__item--small<?php if (isset($errors["start-price-empty"]) || isset($errors["start-price-unvalid"])):?> form__item--invalid <?php endif; ?>">
                 <label for="start-price">Начальная цена <sup>*</sup></label>
-                <input id="start-price" type="text" name="start-price" placeholder="0" value="<?= $new_lot["start-price"]; ?>">
-                <span class="form__error">Введите начальную цену
-                    <?php if(in_array("start-price-unvalid", $errors)):?> - число больше нуля"
-                    <?php endif;?>
-                </span>
+                <input id="start-price" type="text" name="start-price" placeholder="0"
+                    value="<?= isset($new_lot["start-price"]) ? $new_lot["start-price"] : ""; ?>">
+                <span class="form__error"><?= isset($errors["start-price-unvalid"]) ? $errors["start-price-unvalid"] : $errors["start-price-empty"]; ?></span>
             </div>
-            <div class="form__item form__item--small<?php if (in_array("bid-step-empty", $errors) || in_array("bid-step-range-error", $errors)):?> form__item--invalid <?php endif; ?>">
+
+            <div class="form__item form__item--small<?php if (isset($errors["bid-step-empty"]) || isset($errors["bid-step-range-error"])):?> form__item--invalid <?php endif; ?>">
                 <label for="bid-step">Шаг ставки <sup>*</sup></label>
-                <input id="bid-step" type="text" name="bid-step" placeholder="0" value="<?= $new_lot["bid-step"]; ?>">
-                <span class="form__error">Введите шаг ставки - от <?= $bid_step_min?> до <?= $bid_step_max?>руб.</span>
+                <input id="bid-step" type="text" name="bid-step" placeholder="от <?= $bid_step_min?> до <?= $bid_step_max?>"
+                    value="<?= isset($new_lot["bid-step"]) ? $new_lot["bid-step"] : "";?>">
+                <span class="form__error"><?= isset($errors["bid-step-range-error"]) ? $errors["bid-step-range-error"] : $errors["bid-step-empty"]; ?></span>
             </div>
-            <div class="form__item<?php if (in_array("date-expire-empty", $errors) || in_array("date-expire-error", $errors) || in_array("date-format-error", $errors)):?> form__item--invalid <?php endif; ?>">
+
+            <div class="form__item<?php if (isset($errors["date-expire-empty"]) || isset($errors["date-expire-error"]) || isset($errors["date-format-error"])):?> form__item--invalid <?php endif; ?>">
                 <label for="date-expire">Дата окончания торгов <sup>*</sup></label>
-                <input class="form__input-date" id="date-expire" type="text" name="date-expire" placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?= $new_lot["date-expire"]; ?>">
+                <input class="form__input-date" id="date-expire" type="text" name="date-expire" placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?= isset($new_lot["date-expire"]) ? $new_lot["date-expire"] : ""; ?>">
                 <span class="form__error">
-                    <?= in_array("date-expire-error", $errors) ? "Должно быть не менее суток до окончания торгов" : (in_array("date-format-error", $errors) ? "Поправьте формат даты на ГГГГ-ММ-ДД" : "Введите дату завершения торгов в формате ГГГГ-ММ-ДД"); ?>
+                    <?= isset($errors["date-expire-error"]) ? $errors["date-expire-error"] : (isset($errors["date-format-error"]) ? $errors["date-format-error"] : $errors["date-expire-empty"]); ?>
                 </span>
             </div>
         </div>
+
         <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
         <button type="submit" class="button">Добавить лот</button>
     </form>

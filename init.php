@@ -24,9 +24,4 @@ $is_auth = rand(0, 1);
 $user_name = "Гульшат";
 $bid_step_min = "50";
 $bid_step_max = "10000";
-
-/* ----- получить категории -----*/
-$sql = "
-SELECT * FROM `category`;";
-$result = $db->query($sql);
-$categories = $result->fetch_all(MYSQLI_ASSOC);
+$categories = getProductCategories($db);

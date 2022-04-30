@@ -1,4 +1,13 @@
 <?php
+/* ----- получить категории -----*/
+function getProductCategories($db) {
+    $sql = "
+    SELECT * FROM `category`;";
+    $result = $db->query($sql);
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return $data;
+};
+
 /* ----- Получить список активных лотов ----- */
 function getActiveProducts($db) {
     $sql = "
