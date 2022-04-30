@@ -1,10 +1,3 @@
-<pre>
-    Лот:
-    <?= var_dump($new_lot); ?>
-    Ошибки, переданные в шаблон:
-    <?= var_dump($errors); ?>
-</pre>
-
 <main>
     <nav class="nav">
         <ul class="nav__list container">
