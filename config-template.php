@@ -8,4 +8,5 @@ return [
         "port" => 3306,
         "charset" => "utf8mb4",
     ],
+    "default_timezone" => "Europe/Moscow",
 ];

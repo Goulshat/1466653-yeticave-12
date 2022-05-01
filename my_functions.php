@@ -39,19 +39,3 @@ function showNotFoundPage($categories, $is_auth, $user_name, $error_message = "4
     echo $layout_content;
     exit();
 };
-
-function validateDate($date) {
-    if(!strtotime($date)) {
-        return "date-expire-empty";
-    }
-
-    $time_left = strtotime($date) - time();
-    if($time_left < 86000) {
-        return "date-expire-error";
-    }
-
-    $date_format = preg_match("/20[0-9][0-9]\-(0[1-9]|1[012])\-(0[1-9]|1[0-9]|2[0-9]|3[01])/", $date);
-    if(!$date_format) {
-        return "date-format-error";
-    }
-};
