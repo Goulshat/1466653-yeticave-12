@@ -598,12 +598,14 @@ main.container {
 .lot__image {
   width: 350px;
   height: 261px;
+  text-align: center;
   border-bottom: 1px solid #e1e6e7;
 }
 
 .lot__image img {
   width: 100%;
-  height: 100%;
+
+  object-fit: contain;
 }
 
 .lot__info {
@@ -842,7 +844,9 @@ main.container {
 
 .form__error {
   display: none;
+  margin-top: 10px;
   font-size: 11px;
+  line-height: 1.5;
   color: #f84646;
 }
 
@@ -956,6 +960,7 @@ input:invalid .form__error{
   left: 50%;
   top: 50%;
   display: block;
+  object-fit: contain;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);

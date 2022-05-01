@@ -1,27 +1,12 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-$config = require "config.php";
-require_once("my_functions.php");
-
-if (!file_exists("config.php")) {
-    $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
-    trigger_error($msg,E_USER_ERROR);
-}
-
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-$db =  new mysqli($config["db"]["host"], $config["db"]["username"], $config["db"]["password"], $config["db"]["dbname"], $config["db"]["port"]);
-$db->set_charset($config["db"]["charset"]);
-
-
-$sql = "
-SELECT * FROM `category`;";
-$result = $db->query($sql);
-$categories = $result->fetch_all(MYSQLI_ASSOC);
+/* ----- получить категории -----*/
+function getProductCategories($db) {
+    $sql = "
+    SELECT * FROM `category`;";
+    $result = $db->query($sql);
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return $data;
+};
 
 /* ----- Получить список активных лотов ----- */
 function getActiveProducts($db) {
@@ -85,4 +70,18 @@ function getProductBids($product_id, $db) {
     }
 
     return $data;
+};
+
+/* ----- Отправить данные о лоте в БД  ----- */
+function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id, $db) {
+    $sql = "
+    INSERT INTO lots (name, description, img, date_expire, price, bid_step, category_id, author_user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("ssssdiii", $name, $description, $img, $date_expire, $price, $bid_step, $category_id, $author_user_id);
+    $stmt->execute();
+    $id = $db->insert_id;
+    return $id;
 };

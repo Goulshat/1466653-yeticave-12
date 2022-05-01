@@ -1,13 +1,5 @@
 <?php
-date_default_timezone_set("Asia/Yekaterinburg");
-
-require_once("course_library.php");
-require_once("my_functions.php");
-require_once("data.php");
-
-$is_auth = rand(0, 1);
-$user_name = "Гульшат";
-
+require_once("init.php");
 
 if (!isset($_GET["id"]) ) {
     showNotFoundPage($categories, $is_auth, $user_name);
