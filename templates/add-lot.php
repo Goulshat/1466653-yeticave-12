@@ -25,7 +25,7 @@
                 <select id="category" name="category">
                     <option value="0"> - Выберите из списка - </option>
                     <?php foreach($categories as $category => $value): ?>
-                    <option value="<?= html_sc($value["id"]); ?>" <?php if ($value["id"] === $new_lot["category"]):?> selected <?php endif; ?>><?= html_sc($value["title"]); ?></option>
+                    <option value="<?= html_sc($value["id"]); ?>" <?php if(isset($new_lot["category"]) && ($value["id"] === $new_lot["category"])):?> selected <?php endif; ?>><?= html_sc($value["title"]); ?></option>
                     <?php endforeach; ?>
                 </select>
                 <span class="form__error"><?= isset($errors["category"]) ? $errors["category"] : ""; ?></span>

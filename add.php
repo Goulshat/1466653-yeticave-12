@@ -58,9 +58,11 @@ if($_POST) {
         $errors["lot-img"] = "Добавьте изображение лота в формате *.jpeg, *.jpg, *.png или *.webp";
     } else {
         $new_img = $_FILES["lot-img"];
-        $img_extns = pathinfo($new_img["name"], PATHINFO_EXTENSION);
+        $img_extns = ["jpeg", "jpg", "png", "webp"];
+        $lot_extn = pathinfo($new_img["name"], PATHINFO_EXTENSION);
+        $lot_extn = strtolower($lot_extn);
 
-        if ($img_extns === "jpeg" || $img_extns === "jpg" || $img_extns === "png" || $img_extns === "webp") {
+        if (in_array($lot_extn, $img_extns)) {
             $new_img_url = "/uploads/img/lots/" . $new_img["name"];
             move_uploaded_file($_FILES["lot-img"]["tmp_name"], __DIR__ . $new_img_url);
         } else {
