@@ -7,7 +7,7 @@ if($_POST) {
   foreach ($_POST as $key => $value) {
     $_POST[$key] = trim($value);
   };
-
+// Валидация email
   switch(true) {
     case !isset($_POST["email"]):
       $errors["email"] = "Введите ваш e-mail";
@@ -21,7 +21,7 @@ if($_POST) {
       $errors["email"] = "Пользователь с таким e-mail уже существует";
       break;
   }
-
+// Валидация пароля
   switch(true) {
     case !isset($_POST["password"]):
       $errors["password"] = "Введите пароль";
