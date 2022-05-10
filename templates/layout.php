@@ -42,9 +42,9 @@
     </header>
 
     <?= $content ?>
-    </div>
+</div>
 
-    <footer class="main-footer">
+<footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
         <?php foreach($categories as $category => $value): ?>
