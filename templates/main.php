@@ -45,15 +45,14 @@
 
                 <div class="lot__state">
                     <div class="lot__rate">
-                    <span class="lot__amount">Стартовая цена</span>
-                    <span class="lot__cost">
-                        <?= html_sc(showPrice($product["current_price"]))?>
-                    </span>
+                        <span class="lot__amount">Стартовая цена</span>
+                        <span class="lot__cost">
+                            <?= html_sc(showPrice($product["current_price"]))?>
+                        </span>
                     </div>
                     <?php list($hours, $minutes) = countLeftTime($product["date_expire"]);?>
-                    <div class="lot__timer timer
-                    <?php if (intval($hours) < 1):?> timer--finishing <?php endif; ?>";>
-                    <?= html_sc($hours); ?>: <?= html_sc($minutes); ?>
+                    <div class="lot__timer timer<?php if (intval($hours) < 1):?> timer--finishing <?php endif; ?>";>
+                        <?= html_sc($hours); ?>: <?= html_sc($minutes); ?>
                     </div>
                 </div>
                 </div>
