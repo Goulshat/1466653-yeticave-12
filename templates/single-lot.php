@@ -53,29 +53,29 @@
 
                     <table class="history__list">
                         <?php foreach($product_bids as $id => $bid):?>
-                        <tr class="history__item">
-                            <td class="history__name"><?= html_sc($bid["bid_user_name"]); ?></td>
-                            <td class="history__price"><?= html_sc(showPrice($bid["amount"])); ?></td>
-                            <td class="history__time">
+                            <tr class="history__item">
+                                <td class="history__name"><?= html_sc($bid["bid_user_name"]); ?></td>
+                                <td class="history__price"><?= html_sc(showPrice($bid["amount"])); ?></td>
+                                <td class="history__time">
 
-                            <?php
-                            list($hoursPassed, $minutesPassed) = countPassTime($bid["date_register"]);
-                            if (intval($hoursPassed) < 1) {
-                            if (intval($minutesPassed) === 1) {
-                                echo "Минуту назад";
-                            } else {
-                                echo $minutesPassed . " " . get_noun_plural_form($minutesPassed, "минута", "минуты", "минут") . " назад";
-                            }
-                            }
-                            elseif (intval($hoursPassed) === 1 && intval($minutesPassed) < 30) {
-                            echo "Час назад";
-                            } else {
-                            echo date("d.m.Y", strtotime($bid["date_register"])) . " в " . date("H:i:s", strtotime($bid["date_register"]));
-                            }
-                            ?>
+                                <?php
+                                list($hoursPassed, $minutesPassed) = countPassTime($bid["date_register"]);
+                                if (intval($hoursPassed) < 1) {
+                                if (intval($minutesPassed) === 1) {
+                                    echo "Минуту назад";
+                                } else {
+                                    echo $minutesPassed . " " . get_noun_plural_form($minutesPassed, "минута", "минуты", "минут") . " назад";
+                                }
+                                }
+                                elseif (intval($hoursPassed) === 1 && intval($minutesPassed) < 30) {
+                                echo "Час назад";
+                                } else {
+                                echo date("d.m.Y", strtotime($bid["date_register"])) . " в " . date("H:i:s", strtotime($bid["date_register"]));
+                                }
+                                ?>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </table>
                 </div>

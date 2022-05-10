@@ -3,7 +3,7 @@
         <ul class="nav__list container">
         <?php foreach($categories as $category => $value): ?>
             <li class="nav__item">
-            <a href="all-lots.html"> <?= html_sc($value["title"]); ?></a>
+                <a href="all-lots.html"> <?= html_sc($value["title"]); ?></a>
             </li>
         <?php endforeach; ?>
         </ul>
@@ -43,7 +43,7 @@
             <div class="form__input-file">
                 <input class="visually-hidden" name="lot-img" type="file" id="lot-img">
                 <label for="lot-img">
-                Добавить
+                    Добавить
                 </label>
             </div>
             <span class="form__error"><?= isset($errors["lot-img"]) ? $errors["lot-img"] : ""; ?></span>
@@ -53,15 +53,15 @@
             <div class="form__item form__item--small<?php if (isset($errors["start-price"])):?> form__item--invalid <?php endif; ?>">
                 <label for="start-price">Начальная цена <sup>*</sup></label>
                 <input id="start-price" type="text" name="start-price" placeholder="0"
-                value="<?= isset($new_lot["start-price"]) ? $new_lot["start-price"] : ""; ?>">
+                    value="<?= isset($new_lot["start-price"]) ? $new_lot["start-price"] : ""; ?>">
                 <span class="form__error"><?= isset($errors["start-price"]) ? $errors["start-price"] : ""; ?></span>
             </div>
 
             <div class="form__item form__item--small<?php if (isset($errors["bid-step"])):?> form__item--invalid <?php endif; ?>">
                 <label for="bid-step">Шаг ставки <sup>*</sup></label>
                 <input id="bid-step" type="text" name="bid-step"
-                placeholder="от <?= $bid_step_min?> до <?= $bid_step_max?>"
-                value="<?= isset($new_lot["bid-step"]) ? $new_lot["bid-step"] : "";?>">
+                    placeholder="от <?= $bid_step_min?> до <?= $bid_step_max?>"
+                    value="<?= isset($new_lot["bid-step"]) ? $new_lot["bid-step"] : "";?>">
                 <span class="form__error"><?= isset($errors["bid-step"]) ? $errors["bid-step"] : ""; ?></span>
             </div>
 
