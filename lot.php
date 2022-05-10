@@ -2,14 +2,14 @@
 require_once("init.php");
 
 if (!isset($_GET["id"]) ) {
-  showNotFoundPage($categories, $is_auth, $user_name);
+    showNotFoundPage($categories, $is_auth, $user_name);
 }
 
 $product_id = $_GET["id"];
 $product = getProductData($product_id, $db);
 
 if (!$product) {
-  showNotFoundPage($categories, $is_auth, $user_name);
+    showNotFoundPage($categories, $is_auth, $user_name);
 }
 
 $product_bids = getProductBids($product_id, $db);

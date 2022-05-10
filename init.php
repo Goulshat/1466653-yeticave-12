@@ -6,8 +6,8 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $config = require "config.php";
 
 if (!file_exists("config.php")) {
-  $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
-  trigger_error($msg,E_USER_ERROR);
+    $msg = "Создайте файл config.php на основе config-template.php и внесите туда настройки сервера MySQL";
+    trigger_error($msg,E_USER_ERROR);
 }
 
 date_default_timezone_set($config["default_timezone"]);
