@@ -1,4 +1,8 @@
 <?php
+if(empty($_SESSION)) {
+    session_start();
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -18,9 +22,17 @@ $db->set_charset($config["db"]["charset"]);
 require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
-//User shop settings
-$is_auth = rand(0, 1);
-$user_name = "Гульшат";
+// require_once("auth.php");
+//User settings
+
+if(isset($_SESSION["id"]) && isset($_SESSION["user_name"])) {
+    $is_auth = true;
+    $user_name = $_SESSION["user_name"];
+} else {
+    $is_auth = false;
+    $user_name = false;
+}
+
 //Yeticave shop settings
 $bid_step_min = "50";
 $bid_step_max = "10000";
