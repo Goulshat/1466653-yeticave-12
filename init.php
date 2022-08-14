@@ -19,9 +19,16 @@ require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
 
+//User settings
+if(isset($_SESSION["session_id"]) && isset($_SESSION["user"])) {
+    $is_auth = true;
+    $user_name = $_SESSION["user"]["name"];
+} else {
+    $is_auth = false;
+    $user_name = false;
+}
+
 //Yeticave shop settings
-$is_auth = rand(0, 1);
-$user_name = "Гульшат";
 $bid_step_min = "50";
 $bid_step_max = "10000";
 $categories = getProductCategories($db);

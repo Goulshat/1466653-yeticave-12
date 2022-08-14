@@ -22,7 +22,7 @@ if($_POST) {
         $_POST["start-price"] = filter_var($_POST["start-price"], FILTER_VALIDATE_FLOAT);
 
         if($_POST["start-price"] <= 0) {
-            $errors["start-price"] = "Начальная цена не может быть отрицательной";
+        $errors["start-price"] = "Начальная цена не может быть отрицательной";
         }
     }
 

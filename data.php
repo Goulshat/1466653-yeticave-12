@@ -85,3 +85,58 @@ function insertNewProduct($name, $description, $img, $date_expire, $price, $bid_
     $id = $db->insert_id;
     return $id;
 };
+
+/* ----- Сохранить данные о новом пользователе в БД ----- */
+function insertNewUser($email, $password, $name, $message, $db) {
+    $sql = "
+    INSERT INTO users (email, password, name, contacts)
+    VALUES (?, ?, ?, ?);
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("ssss", $email, $password, $name, $message);
+    $stmt->execute();
+    $id = $db->insert_id;
+    return $id;
+}
+
+/* ----- Получить  id  пользователя по email ----- */
+function getUserId($email, $db) {
+    $sql = "
+    SELECT id FROM users WHERE email=?;
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data["id"];
+};
+
+function getUserName($id, $db) {
+    $sql = "
+    SELECT name FROM users WHERE id=?;
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data["name"];
+};
+
+/* ----- Получить  hash пароля по id пользователя ----- */
+function getPasswordHash($id, $db) {
+    $sql = "
+    SELECT password FROM users WHERE id=?;
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data["password"];
+};
