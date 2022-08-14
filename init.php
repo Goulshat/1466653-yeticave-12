@@ -1,8 +1,4 @@
 <?php
-if(empty($_SESSION)) {
-    session_start();
-}
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -22,12 +18,11 @@ $db->set_charset($config["db"]["charset"]);
 require_once("course_library.php");
 require_once("my_functions.php");
 require_once("data.php");
-// require_once("auth.php");
-//User settings
 
-if(isset($_SESSION["id"]) && isset($_SESSION["user_name"])) {
+//User settings
+if(isset($_SESSION["session_id"]) && isset($_SESSION["user"])) {
     $is_auth = true;
-    $user_name = $_SESSION["user_name"];
+    $user_name = $_SESSION["user"]["name"];
 } else {
     $is_auth = false;
     $user_name = false;

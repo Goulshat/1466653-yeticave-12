@@ -3,11 +3,11 @@ require_once("init.php");
 $page_name = "Регистрация нового аккаунта";
 $errors = [];
 
-    if($_POST) {
+if($_POST) {
     foreach ($_POST as $key => $value) {
         $_POST[$key] = trim($value);
     };
-    // Email
+
     switch(true) {
         case empty($_POST["email"]):
         $errors["email"] = "Введите ваш e-mail";
@@ -21,7 +21,7 @@ $errors = [];
         $errors["email"] = "Пользователь с таким e-mail уже существует";
         break;
     }
-    // Пароль
+
     switch($_POST["password"]) {
         case false:
         $errors["password"] = "Введите пароль";
@@ -34,7 +34,6 @@ $errors = [];
         default :
         $hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
     }
-        //$password_pattern = "/((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,16})/";
         //?спецсимволы (?=.*[\!\.,&;:@#%\(\)\[\]\{\}])
 
     if(empty($_POST["name"]) || is_numeric($_POST["name"])) {
@@ -51,9 +50,11 @@ $errors = [];
         $_SESSION['id'] = session_id();
         $_SESSION['user_id'] = $new_user_id;
         $_SESSION['user_name'] = $_POST["name"];
-        $_COOKIE['user_id'] = $new_user_id;
-        $_COOKIE['user_name'] = $_POST["name"];
-        $_COOKIE['user_password'] = $hash;
+
+        setcookie("user_id", $user_id);
+        setcookie("user_name", $user_name);
+        setcookie("user_password", $user_hash);
+
         header('Location: /index.php');
         exit();
     }
@@ -62,6 +63,7 @@ $errors = [];
 $content = include_template("signup.php", [
     "categories" => $categories,
     "page_name" => $page_name,
+    "user_name" => $user_name,
     "errors" => $errors,
     "user" => $_POST,
 ]);

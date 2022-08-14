@@ -9,6 +9,15 @@
         </ul>
     </nav>
 
+    <?php if(isset($_SESSION['user_id'])): ?>
+    <div class="container">
+        <p>
+            <b><?= $user_name;?></b>, вы уже зарегистрированы на сайте. Хотите
+            <a href="#">сменить аккаунт?</a>
+        </p>
+    </div>
+
+    <?php else:?>
     <form class="form container <?php if (count($errors) > 0):?> form--invalid<?php endif; ?>" action="signup.php" method="post" autocomplete="off">
         <h2><?= html_sc($page_name); ?></h2>
 
@@ -42,4 +51,5 @@
 
         <a class="text-link" href="login.php">Уже есть аккаунт</a>
     </form>
+    <?php endif;?>
 </main>

@@ -111,7 +111,7 @@ function getUserId($email, $db) {
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    return $data["id"];
 };
 
 function getUserName($id, $db) {
@@ -124,7 +124,7 @@ function getUserName($id, $db) {
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    return $data["name"];
 };
 
 /* ----- Получить  hash пароля по id пользователя ----- */
@@ -138,5 +138,5 @@ function getPasswordHash($id, $db) {
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    return $data["password"];
 };

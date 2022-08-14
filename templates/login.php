@@ -1,16 +1,3 @@
-<pre>
-    Лот:
-    <?= var_dump($_POST); ?>
-    Ошибки, переданные в шаблон:
-    <?= var_dump($errors); ?>
-    Переменные в сессию и в куки:
-    <?= var_dump($_SESSION['id'],
-        $_SESSION['user_id'],
-        $_SESSION['user_name'],
-        $_COOKIE['user_id'],
-        $_COOKIE['user_name'],
-        $_COOKIE['user_password'])?>
-</pre>
 <main>
     <nav class="nav">
     <ul class="nav__list container">
